@@ -1,0 +1,29 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model FarmProduct {
+  createdAt   DateTime @default(now())
+  id          String   @id @default(cuid())
+  price       Float?
+  productName String?
+  quantity    Int?
+  updatedAt   DateTime @updatedAt
+  vendor      Vendor?  @relation(fields: [vendorId], references: [id])
+  vendorId    String?
+}
+
+model Vendor {
+  contact          String?
+  createdAt        DateTime      @default(now())
+  farmProducts     FarmProduct[]
+  id               String        @id @default(cuid())
+  productsSupplied String?
+  updatedAt        DateTime      @updatedAt
+  vendorName       String?
+}
